@@ -1,1 +1,32 @@
-Another test
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<!-- example content -->
+<div class="container">
+  <div>
+    <h1>My Title</h1>
+    <button>My Button</button>
+  </div>
+
+  <div id="app">
+    {{ message }}
+  </div>
+</div>
+</body>
+
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!'
+        }
+    });
+</script>
+</html>
