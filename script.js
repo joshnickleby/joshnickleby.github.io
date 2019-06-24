@@ -13,7 +13,35 @@
  */
 
   //             1.       2.           3.          4.                  5.                 6.                   7.                8.              9.
-const layer1 = /(\/\*\*)|( *\*[^/].*)|( *\*\/ *)|^([ \w]*class \w+.*)|( *constructor.*)|^( *[a-z]\w*\(.*\).*)|( *(const|let) \w+.+)|( *\w+\.\w+\(.*)|( *[}{])/;
+// const layer1 = /(?<comment_head>\/\*\*)|(?<comment_body> *\*[^/].*)|(?<comment_tail> *\*\/ *)|^([ \w]*class \w+.*)|( *constructor.*)|^( *[a-z]\w*\(.*\).*)|( *(const|let) \w+.+)|( *\w+\.\w+\(.*)|( *[}{])/;
+
+const commentHeadLayer1 = new RegExp(/(?<comment_head>\/\*\*)/);
+const commentBodyLayer1 = new RegExp(/(?<comment_body> *\*[^/].*)/);
+const commentTailLayer1 = new RegExp(/(?<comment_tail> *\*\/ *)/);
+
+const classDefLayer1 = new RegExp(/^(?<class_def>[ \w]*class \w+.*)/);
+
+const constructorDefLayer1 = new RegExp(/(?<constructor_def> *constructor.*)/);
+
+const methodDefLayer1 = new RegExp(/^(?<method_def> *[a-z]\w*\(.*\).*)/);
+
+const variableDefLayer1 = new RegExp(/(?<variable_def> *(const|let) \w+.+)/);
+
+const methodCallLayer1 = new RegExp(/(?<method_call> *\w+\.\w+\(.*)/);
+
+const functionScopeLayer1 = new RegExp(/(?<functionScope>[}{])/);
+
+const layer1 = new RegExp(
+  commentHeadLayer1.source + '|' +
+  commentBodyLayer1.source + '|' +
+  commentTailLayer1.source + '|' +
+  classDefLayer1.source + '|' +
+  constructorDefLayer1.source + '|' +
+  methodDefLayer1.source + '|' +
+  variableDefLayer1.source + '|' +
+  methodCallLayer1.source + '|' +
+  functionScopeLayer1.source
+);
 
 const commentBody = /( *)(\*)( *)(.*)/;
 
@@ -25,6 +53,8 @@ const createCodeLine = (line) => {
 
   if (line) {
     let match = layer1.exec(line);
+
+    console.log('----------------------', match);
 
     if (match) {
 
@@ -93,6 +123,8 @@ export class FileAware {
 
     return elements[0];
   });
+
+  console.table(elements);
 
   elements = runParser(elements.filter(e => e && e.type));
 
