@@ -4,16 +4,73 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--  <link rel="stylesheet" href="libraries/styles/an-old-hope.css">-->
+<!--  <script src="libraries/highlight.pack.js"></script>-->
+
   <link href="style.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!--  <script>hljs.initHighlightingOnLoad();</script>-->
+
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
 <!-- example content -->
 <div class="container">
+  <h1>Building an Application with Angular</h1>
+
   <div>
-    <h1>My Title</h1>
-    <button>My Button</button>
+    <ul>TODO
+      <li>Make a StackBlitz example</li>
+    </ul>
   </div>
+
+  <div class="summary">
+    I will be going through the motions of creating a service in Angular
+
+    Updated: 06/23/2019
+    <pre><code class="json">
+      Angular CLI: 8.0.3
+      Node: 10.13.0
+      Angular: 8.0.2
+      ... animations, common, compiler, compiler-cli, core, forms
+      ... language-service, platform-browser, platform-browser-dynamic
+      ... router
+
+      Package                           Version
+      -----------------------------------------------------------
+      @angular-devkit/architect         0.800.3
+      @angular-devkit/build-angular     0.800.3
+      @angular-devkit/build-optimizer   0.800.3
+      @angular-devkit/build-webpack     0.800.3
+      @angular-devkit/core              8.0.3
+      @angular-devkit/schematics        8.0.3
+      @angular/cli                      8.0.3
+      @ngtools/webpack                  8.0.3
+      @schematics/angular               8.0.3
+      @schematics/update                0.800.3
+      rxjs                              6.5.2
+      typescript                        3.4.5
+      webpack                           4.30.0
+    </code></pre>
+  </div>
+
+  <h2>Create a Logging Class</h2>
+
+  <div class="summary">
+    The first thing I like to do when creating an Angular project is to
+    create a common logging utility. You may call it whatever you like
+    but for the sake of this tutorial <span class="code-line">FileAware</span>.
+  </div>
+
+  <div>
+    All classes will extend this class. It can become tricky if you have other
+    extended extended files. As an alternative you may just add this as a
+    variable in the class using it and call it a log file.
+  </div>
+
+  <pre id="file-aware"><code style="display: flex; flex-direction: column; padding: 20px">
+    <span v-for="(item, i) in code" class="ts-line-num">{{ i }}<span v-for="part in item" v-bind:class="part.klass">{{ part.content }}</span></span>
+  </code></pre>
 
   <div id="app">
     {{ message }}
@@ -22,11 +79,92 @@
 </body>
 
 <script>
+
+  const body = `
+/**
+ * Common logging class to extend.
+ */
+export class FileAware {
+
+  constructor(private className: string) {}
+
+  log(methodName: string, ...args) {
+    const spacer = args && args.length > 0 ? ' --- ' : '';
+
+    console.log(\`\${this.className}.\${methodName}\${spacer}\`, ...args);
+  }
+
+  logTable(methodName: string, tableName: string, data: any[]) {
+    this.log(methodName);
+    console.groupCollapsed(tableName);
+    console.table(data);
+    console.groupEnd();
+  }
+}
+
+`;
+
+  const commentStart = /(\/\*{1,2})/;
+  console.log(commentStart, commentStart.exec(body));
+
+  const commentContinue = /( )(\*)( )(.*)/;
+  console.log(commentContinue, commentContinue.exec(body));
+
+  const commentEnd = /( )(\*\/)/;
+  console.log(commentEnd, commentEnd.exec(body));
+
+  const classArea = /(export)( )(class)( )(\w+)( )({)/;
+  console.log(classArea, classArea.exec(body));
+
+  const constructorArea = /( +)(constructor)(\()(private) (\w+)(:) (\w+)(\)) ({})/;
+  console.log(constructorArea, constructorArea.exec(body));
+
+  const methodOneLine = /( +)(\w+)(\()(\w+)(:)( )(\w+)(,)( )(\.*)(\w+)(\))( )({)/;
+  console.log(methodOneLine, methodOneLine.exec(body));
+
+  const firstLogLine = /( +)(const)( )(\w+)( )(=)( )(\w+)( )(&&)( )(\w+)(.)(\w+)( )(>)( )(0)( )(\?)( )(')( )(---)( )(')( )(:)( )('')(;)/
+  console.log(firstLogLine, firstLogLine.exec(body));
+
+  const secondLogLine = /( +)(\w+)(.)(\w+)(\()(`)(\$)({)(this)(.)(\w+)(})(.)(\$)({)(\w+)(})(\$)({)(\w+)(})(`)(,)( )(.{3})(\w+)(\))(;)/;
+  console.log(secondLogLine, secondLogLine.exec(body));
+
+  const methodEnd = /( +)(})/;
+  console.log(methodEnd, methodEnd.exec(body));
+
+  const methodOneLineTwo = /( +)(\w+)(\()(\w+)(:)( )(\w+)(,)( )(\w+)(:)( )(\w+)(,)( )(\w+)(:)( )(\w+)(\[])(\))( )({)/;
+  console.log(methodOneLineTwo, methodOneLineTwo.exec(body));
+
+  const innerMethodCallLine = /( +)(\w+)(.)(\w+)(\()(\w*)(\))(;)/;
+  console.log(innerMethodCallLine, innerMethodCallLine.exec(body));
+
+
     const app = new Vue({
         el: '#app',
         data: {
             message: 'Hello Vue!'
         }
     });
+
+    const fileAware = new Vue({
+        el: '#file-aware',
+        data: {
+            code: [
+                [ { klass: 'ts-comment', content: '/**' } ],
+                [ { klass: 'ts-comment i-1', content: ' *   Common logging class to extend.' } ],
+                [ { klass: 'ts-comment i-1', content: ' */' }],
+                [],
+                [
+                    { klass: 'ts-export', content: 'export' },
+                    { klass: 'ts-keyword', content: 'class' },
+                    { klass: 'ts-class', content: 'FileAware' },
+                    { klass: 'ts-delimiter', content: '{'}
+                ]
+            ]
+        }
+    });
+
+    const fileAwareDeux = new Vue({
+
+    })
 </script>
 </html>

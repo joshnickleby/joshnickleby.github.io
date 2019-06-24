@@ -8,8 +8,99 @@ button {
   background-color: white;
 }
 
+pre {
+  background-color: #0F111A;
+}
+
+code {
+  background-color: #0F111A;
+  font-size: 20px;
+  font-family: 'Fira Sans', sans-serif;
+}
+
+.i-1 {
+  padding-left: 5px;
+}
+
+.i-2 {
+  padding-left: 10px;
+}
+
 .container {
   width: 60%;
   margin: 0 auto;
   background-color: white;
+}
+
+.ts-line-highlight {
+  background-color: #1B2529;
+}
+
+.ts-line-num {
+  color: #475F63;
+  margin: 0;
+}
+
+.ts-line-num span:first-child {
+  margin-left: 20px;
+}
+
+.ts-line-num span:not(:first-child) {
+  padding-left: 10px;
+}
+
+.ts-line-num-highlight {
+  color: #525975;
+}
+
+.ts-export {
+  color: #89DDFF;
+  font-style: italic;
+}
+
+.ts-delimiters {
+  color: #89DDFF;
+}
+
+.ts-keyword {
+  color: #C792EA;
+  font-style: italic;
+}
+
+.ts-class {
+  color: #FFCB6B;
+}
+
+.ts-method {
+  color: #82AAFF;
+}
+
+.ts-this {
+  color: #c60e27;
+  font-style: italic;
+}
+
+.ts-comment {
+  color: #717CB4;
+  font-style: italic;
+}
+
+.ts-param {
+  color: #E78C6C;
+}
+
+.ts-variable {
+  color: #EEFFE3;
+}
+
+.ts-interface {
+  color: #C3E88D;
+}
+
+.ts-module {
+  color: #C3D3DE;
+}
+
+.ts-string {
+  color: #C3E88D;
 }
