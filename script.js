@@ -13,7 +13,12 @@
  */
 
   //             1.       2.           3.          4.                  5.                 6.                   7.                8.              9.
-const layer1 = /(\/\*\*)|( *\*[^/].*)|( *\*\/ *)|^([ \w]*class \w+.*)|( *constructor.*)|^( *[a-z]\w*\(.*\).*)|( *(const|let) \w+.+)|( *\w+\.\w+\(.*)|( *})/;
+const layer1 = /(\/\*\*)|( *\*[^/].*)|( *\*\/ *)|^([ \w]*class \w+.*)|( *constructor.*)|^( *[a-z]\w*\(.*\).*)|( *(const|let) \w+.+)|( *\w+\.\w+\(.*)|( *[}{])/;
+
+const commentBody = /( *)(\*)( *)(.*)/;
+
+const self = t => t;
+const assignComment = g => g.klass = 'ts-comment';
 
 const createCodeLine = (line) => {
   let lineItem = { type: 'EPSILON', group: '' };
@@ -42,8 +47,6 @@ const createCodeLine = (line) => {
 
         return {type, group: g}
       });
-
-      console.log('------', defined);
 
       lineItem = defined.filter(e => e.type && e.group);
     }
@@ -81,20 +84,19 @@ export class FileAware {
 
   const lines = body.split('\n');
 
-
-
-  const iFinal = layer1;
-
-  console.groupCollapsed(iFinal.toLocaleString());
-
-  lines.forEach(line => {
+  let elements = lines.map(line => {
     const elements = createCodeLine(line);
+
     console.groupCollapsed(line);
     console.table(elements);
     console.groupEnd();
+
+    return elements[0];
   });
 
-  console.groupEnd();
+  elements = runParser(elements.filter(e => e && e.type));
+
+  elements.forEach(el => console.log(el));
 
   // console.log = () => {
   // };
@@ -102,8 +104,7 @@ export class FileAware {
 // const commentStart = /(\/\*{1,2})/;
 // console.log(commentStart, commentStart.exec(body));
 //
-// const commentContinue = /( )(\*)( )(.*)/;
-// console.log(commentContinue, commentContinue.exec(body));
+
 //
 // const commentEnd = /( )(\*\/)/;
 // console.log(commentEnd, commentEnd.exec(body));
@@ -132,3 +133,21 @@ export class FileAware {
 // const innerMethodCallLine = /( +)(\w+)(.)(\w+)(\()(\w*)(\))(;)/;
 // console.log(innerMethodCallLine, innerMethodCallLine.exec(body));
 }
+
+function runParser(elements) {
+  return elements.map(element => {
+    element.type === 'COMMENT_HEAD' ? element.klass = 'ts-comment' :
+      element.type === 'COMMENT_BODY' ? breakDownElement(element, commentBody, self, assignComment, self, assignComment) :
+        'default';
+
+    return element;
+  });
+}
+
+function breakDownElement(element, regex, ...groupFns) {
+  const groups = regex.exec(element.group);
+  console.log('-------------------------------', element, regex, groups);
+
+  return Array.from(Array(groups.length).map(i => groupFns[i](groups[i])));
+}
+
