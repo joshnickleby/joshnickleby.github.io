@@ -9,9 +9,10 @@
 
   <link href="style.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="script.js"></script>
 <!--  <script>hljs.initHighlightingOnLoad();</script>-->
 
-  <link href="https://fonts.googleapis.com/css?family=Fira+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Fira+Mono:400,500,700&display=swap" rel="stylesheet">
 </head>
 <body>
 <!-- example content -->
@@ -103,40 +104,6 @@ export class FileAware {
 }
 
 `;
-
-  const commentStart = /(\/\*{1,2})/;
-  console.log(commentStart, commentStart.exec(body));
-
-  const commentContinue = /( )(\*)( )(.*)/;
-  console.log(commentContinue, commentContinue.exec(body));
-
-  const commentEnd = /( )(\*\/)/;
-  console.log(commentEnd, commentEnd.exec(body));
-
-  const classArea = /(export)( )(class)( )(\w+)( )({)/;
-  console.log(classArea, classArea.exec(body));
-
-  const constructorArea = /( +)(constructor)(\()(private) (\w+)(:) (\w+)(\)) ({})/;
-  console.log(constructorArea, constructorArea.exec(body));
-
-  const methodOneLine = /( +)(\w+)(\()(\w+)(:)( )(\w+)(,)( )(\.*)(\w+)(\))( )({)/;
-  console.log(methodOneLine, methodOneLine.exec(body));
-
-  const firstLogLine = /( +)(const)( )(\w+)( )(=)( )(\w+)( )(&&)( )(\w+)(.)(\w+)( )(>)( )(0)( )(\?)( )(')( )(---)( )(')( )(:)( )('')(;)/
-  console.log(firstLogLine, firstLogLine.exec(body));
-
-  const secondLogLine = /( +)(\w+)(.)(\w+)(\()(`)(\$)({)(this)(.)(\w+)(})(.)(\$)({)(\w+)(})(\$)({)(\w+)(})(`)(,)( )(.{3})(\w+)(\))(;)/;
-  console.log(secondLogLine, secondLogLine.exec(body));
-
-  const methodEnd = /( +)(})/;
-  console.log(methodEnd, methodEnd.exec(body));
-
-  const methodOneLineTwo = /( +)(\w+)(\()(\w+)(:)( )(\w+)(,)( )(\w+)(:)( )(\w+)(,)( )(\w+)(:)( )(\w+)(\[])(\))( )({)/;
-  console.log(methodOneLineTwo, methodOneLineTwo.exec(body));
-
-  const innerMethodCallLine = /( +)(\w+)(.)(\w+)(\()(\w*)(\))(;)/;
-  console.log(innerMethodCallLine, innerMethodCallLine.exec(body));
-
 
     const app = new Vue({
         el: '#app',
